@@ -25,7 +25,7 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Generate SBOM
         run: cyclonedx-py requirements -i requirements.txt -o sbom.xml
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: sbom
           path: sbom.xml
@@ -45,7 +45,7 @@ jobs:
         if: ${{ env.SNYK_TOKEN != '' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false) }}
         run: snyk test
       - run: pytest --cov=. --cov-report=term-missing --cov-report=xml --cov-fail-under=90
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: coverage
           path: coverage.xml
@@ -58,7 +58,7 @@ jobs:
           mkdir -p logs
           npx railway logs --service "$RAILWAY_SERVICE" --project "$RAILWAY_PROJECT" --env production --json > logs/latest_railway.log
         continue-on-error: true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: railway-logs
           path: logs/latest_railway.log
